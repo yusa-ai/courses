@@ -1,41 +1,33 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
-import {
-	Timestamp,
-	collection,
-	orderBy,
-	query,
-	where,
-} from "firebase/firestore";
+import { FlatList, StyleSheet, View } from "react-native";
+import { collection, orderBy, query, where } from "firebase/firestore";
 
+import Course from "./components/Course";
 import { StatusBar } from "expo-status-bar";
 import { db } from "../../../firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 const Feed = () => {
+	const today = getTodayDate();
+
+	// Get future courses and listen for changes in real time (auto-update)
 	const [courses, loading, error] = useCollectionData(
-		query(collection(db, "courses"))
+		query(
+			collection(db, "courses"),
+			where("startDate", ">=", today),
+			orderBy("startDate", "asc")
+		)
 	);
 
-	const renderCourse = ({ item }) => (
-		<View style={styles.course}>
-			<Text style={styles.title}>{item.title}</Text>
-			<Text style={styles.instructor}>{item.instructor}</Text>
-
-			<Text style={styles.date}>{item.startDate.toDate().toString()}</Text>
-			<Text style={styles.date}>{item.endDate.toDate().toString()}</Text>
-
-			<Text style={styles.platform}>{item.platform}</Text>
-			<Text style={styles.link}>{item.link}</Text>
-		</View>
-	);
+	const renderCourse = ({ item }) => <Course course={item} />;
 
 	return (
 		<View style={styles.container}>
 			{courses && (
 				<FlatList
+					style={styles.courses}
 					data={courses}
 					renderItem={renderCourse}
-					keyExtractor={(item, index) => index}
+					keyExtractor={(_item, index) => index}
 				/>
 			)}
 
@@ -49,8 +41,21 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
-		backgroundColor: "white",
+		backgroundColor: "#e04f4f",
+	},
+
+	courses: {
+		marginTop: 20,
 	},
 });
+
+const getTodayDate = () => {
+	const today = new Date();
+	const dd = String(today.getDate()).padStart(2, "0");
+	const mm = String(today.getMonth()).padStart(2, "0");
+	const yyyy = today.getFullYear();
+
+	return new Date(yyyy, mm, dd);
+};
 
 export default Feed;
