@@ -1,9 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
 
+import { StatusBar } from "expo-status-bar";
+
 const Profile = () => {
 	return (
 		<View style={styles.container}>
-			<Text>Feed</Text>
+			<Text>Profile</Text>
+
+			<StatusBar style="auto" />
 		</View>
 	);
 };

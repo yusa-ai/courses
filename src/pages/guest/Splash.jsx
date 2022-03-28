@@ -1,5 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
+import { StatusBar } from "expo-status-bar";
+
 const Splash = ({ navigation }) => (
 	<View style={styles.container}>
 		<TouchableOpacity
@@ -17,6 +19,8 @@ const Splash = ({ navigation }) => (
 			}}>
 			<Text>Register</Text>
 		</TouchableOpacity>
+
+		<StatusBar style="auto" />
 	</View>
 );
 

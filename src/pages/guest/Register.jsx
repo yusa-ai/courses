@@ -9,6 +9,7 @@ import { auth, db } from "../../../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 
+import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 
 const Register = () => {
@@ -55,6 +56,8 @@ const Register = () => {
 			<TouchableOpacity onPress={() => handleSubmit()}>
 				<Text style={styles.button}>Register</Text>
 			</TouchableOpacity>
+
+			<StatusBar style="auto" />
 		</View>
 	);
 };
