@@ -17,7 +17,7 @@ const UserTab = () => {
 				component={Feed}
 				options={{
 					tabBarIcon: ({ color, size }) => (
-						<Ionicons name="home-outline" color={color} size={size} />
+						<Ionicons name="list-outline" color={color} size={size} />
 					),
 				}}
 			/>
