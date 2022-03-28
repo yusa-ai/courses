@@ -12,19 +12,19 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 
 const Login = () => {
-	const [username, setUsername] = useState("");
+	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
 	const handleSubmit = async () => {
-		await signInWithEmailAndPassword(auth, username, password);
+		await signInWithEmailAndPassword(auth, email, password);
 	};
 
 	return (
 		<View style={styles.container}>
 			<TextInput
 				style={styles.input}
-				placeholder="Username"
-				onChangeText={setUsername}
+				placeholder="Email address"
+				onChangeText={setEmail}
 			/>
 			<TextInput
 				style={styles.input}
