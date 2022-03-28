@@ -1,11 +1,15 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { StatusBar } from "expo-status-bar";
+import { auth } from "../../../firebase";
+import { signOut } from "firebase/auth";
 
 const Profile = () => {
 	return (
 		<View style={styles.container}>
-			<Text>Profile</Text>
+			<TouchableOpacity onPress={() => signOut(auth)}>
+				<Text>Logout</Text>
+			</TouchableOpacity>
 
 			<StatusBar style="auto" />
 		</View>
