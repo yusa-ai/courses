@@ -22,10 +22,10 @@ const Register = () => {
 			async (userRef) => {
 				const user = userRef.user;
 
-				// Mise à jour du pseudo de l'utilisateur en interne
+				// Update the internal display name of the user
 				await updateProfile(user, { displayName: username });
 
-				// Initialisation des données de l'utilisateur en BDD
+				// Set user data in database
 				await setDoc(doc(db, "users", user.uid), {
 					uid: user.uid,
 					username: username,
