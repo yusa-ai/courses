@@ -6,7 +6,7 @@ import { StatusBar } from "expo-status-bar";
 import { db } from "../../../firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
-const Feed = () => {
+const Courses = () => {
 	const today = getTodayDate();
 
 	// Get future courses and listen for changes in real time (auto-update)
@@ -58,4 +58,4 @@ const getTodayDate = () => {
 	return new Date(yyyy, mm, dd);
 };
 
-export default Feed;
+export default Courses;

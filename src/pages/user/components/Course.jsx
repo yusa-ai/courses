@@ -1,4 +1,4 @@
-import { Linking, StyleSheet, Text, View } from "react-native";
+import { Linking, Platform, StyleSheet, Text, View } from "react-native";
 
 import TimeAgo from "./TimeAgo";
 
@@ -14,9 +14,15 @@ const getTime = (date) => {
 	return strTime;
 };
 
+const platform = Platform.OS;
+
 const Course = ({ course }) => (
 	<View style={styles.course}>
-		<Text style={styles.title}>{course.title}</Text>
+		{platform === "ios" && <Text style={styles.titleIOS}>{course.title}</Text>}
+		{platform !== "ios" && (
+			<Text style={styles.titleAndroid}>{course.title}</Text>
+		)}
+
 		<Text style={styles.instructor}>{course.instructor}</Text>
 
 		<View style={styles.dates}>
@@ -51,9 +57,14 @@ const styles = StyleSheet.create({
 		minWidth: "85%",
 	},
 
-	title: {
+	titleIOS: {
 		fontSize: 16,
 		fontWeight: "600",
+	},
+
+	titleAndroid: {
+		fontSize: 16,
+		fontWeight: "bold",
 	},
 
 	instructor: {
