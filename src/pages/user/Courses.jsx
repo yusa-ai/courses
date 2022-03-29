@@ -8,7 +8,6 @@ import {
 
 import Course from "./components/Course";
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
 
 const Courses = () => {
 	const today = getTodayDate();

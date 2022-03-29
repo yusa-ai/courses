@@ -1,15 +1,12 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { auth, db } from "../../../firebase";
-import { collection, doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { signOut, updateProfile } from "firebase/auth";
-import {
-	useCollectionData,
-	useDocumentData,
-} from "react-firebase-hooks/firestore";
 
 import Dialog from "react-native-dialog";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 import { useState } from "react";
 
 const Profile = () => {
@@ -19,7 +16,6 @@ const Profile = () => {
 	const [username, setUsername] = useState(user.displayName);
 
 	const [userData] = useDocumentData(doc(db, "users", user.uid));
-	const [groups] = useCollectionData(collection(db, "groups"));
 
 	const changeUsername = async (username) => {
 		// Update the internal display name of the user
@@ -49,11 +45,7 @@ const Profile = () => {
 
 			<View>
 				<Text style={styles.username}>{user.displayName}</Text>
-				{userData && groups && (
-					<Text style={styles.group}>
-						Group: {groups.find((group) => group.id === userData.group).name}
-					</Text>
-				)}
+				{userData && <Text style={styles.group}>Group: {userData.group}</Text>}
 			</View>
 
 			<View style={styles.menu}>
