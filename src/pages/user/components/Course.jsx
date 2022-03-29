@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
 	},
 
 	link: {
-		color: "blue",
+		color: "#ed3b3b",
 		textDecorationLine: "underline",
 	},
 });
