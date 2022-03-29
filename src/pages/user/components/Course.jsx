@@ -16,12 +16,29 @@ const getTime = (date) => {
 
 const platform = Platform.OS;
 
+// function that display groups with a comma between them
+const getGroups = (groups) => {
+	let groupsString = "";
+	for (let i = 0; i < groups.length; i++) {
+		groupsString += groups[i];
+		if (i !== groups.length - 1) {
+			groupsString += ", ";
+		}
+	}
+	return groupsString;
+};
+
 const Course = ({ course }) => (
 	<View style={styles.course}>
-		{platform === "ios" && <Text style={styles.titleIOS}>{course.title}</Text>}
-		{platform !== "ios" && (
-			<Text style={styles.titleAndroid}>{course.title}</Text>
-		)}
+		<View style={styles.inline}>
+			{platform === "ios" && (
+				<Text style={styles.titleIOS}>{course.title}</Text>
+			)}
+			{platform !== "ios" && (
+				<Text style={styles.titleAndroid}>{course.title}</Text>
+			)}
+			<Text style={styles.groups}>{getGroups(course.groups)}</Text>
+		</View>
 
 		<Text style={styles.instructor}>{course.instructor}</Text>
 
@@ -65,6 +82,15 @@ const styles = StyleSheet.create({
 	titleAndroid: {
 		fontSize: 16,
 		fontWeight: "bold",
+	},
+
+	groups: {
+		color: "dimgray",
+	},
+
+	inline: {
+		flexDirection: "row",
+		justifyContent: "space-between",
 	},
 
 	instructor: {

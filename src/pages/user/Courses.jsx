@@ -1,13 +1,20 @@
 import { FlatList, StyleSheet, View } from "react-native";
-import { collection, orderBy, query, where } from "firebase/firestore";
+import { auth, db } from "../../../firebase";
+import { collection, doc, orderBy, query, where } from "firebase/firestore";
+import {
+	useCollectionData,
+	useDocumentData,
+} from "react-firebase-hooks/firestore";
 
 import Course from "./components/Course";
 import { StatusBar } from "expo-status-bar";
-import { db } from "../../../firebase";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import { useState } from "react";
 
 const Courses = () => {
 	const today = getTodayDate();
+
+	const [userData] = useDocumentData(doc(db, "users", auth.currentUser.uid));
+	const userGroup = userData?.group;
 
 	// Get future courses and listen for changes in real time (auto-update)
 	const [courses, loading, error] = useCollectionData(
@@ -25,7 +32,10 @@ const Courses = () => {
 			{courses && (
 				<FlatList
 					style={styles.courses}
-					data={courses}
+					// Filtering courses by group doesn't work in the query above and I don't know why
+					data={[...courses].filter((course) =>
+						course.groups.includes(userGroup)
+					)}
 					renderItem={renderCourse}
 					keyExtractor={(_item, index) => index}
 				/>
