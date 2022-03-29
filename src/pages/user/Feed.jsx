@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
-		backgroundColor: "#e04f4f",
+		backgroundColor: "#ed3b3b",
 	},
 
 	courses: {
