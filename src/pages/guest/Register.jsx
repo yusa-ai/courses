@@ -6,16 +6,23 @@ import {
 	View,
 } from "react-native";
 import { auth, db } from "../../../firebase";
+import { collection, doc, orderBy, query, setDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
 
+import { Picker } from "@react-native-picker/picker";
 import { StatusBar } from "expo-status-bar";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useState } from "react";
 
 const Register = () => {
 	const [username, setUsername] = useState("");
+	const [group, setGroup] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+
+	const [groups] = useCollectionData(
+		query(collection(db, "groups"), orderBy("name", "asc"))
+	);
 
 	const handleSubmit = async () => {
 		createUserWithEmailAndPassword(auth, email, password).then(
@@ -29,6 +36,7 @@ const Register = () => {
 				await setDoc(doc(db, "users", user.uid), {
 					uid: user.uid,
 					username: username,
+					group: group,
 				});
 			}
 		);
@@ -41,11 +49,26 @@ const Register = () => {
 				placeholder="Username"
 				onChangeText={setUsername}
 			/>
+
+			{groups && (
+				<Picker
+					style={styles.picker}
+					mode="dropdown"
+					selectedValue={group}
+					onValueChange={setGroup}>
+					<Picker.Item label="Select a group" value="" />
+					{groups.map((group) => (
+						<Picker.Item label={group.name} value={group.id} key={group.id} />
+					))}
+				</Picker>
+			)}
+
 			<TextInput
 				style={styles.input}
 				placeholder="Email"
 				onChangeText={setEmail}
 			/>
+
 			<TextInput
 				style={styles.input}
 				placeholder="Password"
@@ -68,6 +91,10 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 		backgroundColor: "white",
+	},
+
+	picker: {
+		alignSelf: "stretch",
 	},
 
 	input: {
