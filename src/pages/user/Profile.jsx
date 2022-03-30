@@ -62,7 +62,7 @@ const Profile = () => {
 
 	return (
 		<View style={styles.container}>
-			<TouchableOpacity onPress={() => changePicture()}>
+			<TouchableOpacity onLongPress={() => changePicture()}>
 				<View style={styles.profileImage}>
 					{!picture && (
 						<Image
@@ -87,9 +87,7 @@ const Profile = () => {
 
 			<View>
 				<Text style={styles.name}>{student.displayName}</Text>
-				{studentData && (
-					<Text style={styles.group}>Group: {studentData.group}</Text>
-				)}
+				{studentData && <Text style={styles.group}>{studentData.group}</Text>}
 			</View>
 
 			<View style={styles.menu}>
