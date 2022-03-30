@@ -13,15 +13,16 @@ const SmallPicture = ({ uri }) => (
 
 const styles = StyleSheet.create({
 	container: {
-		width: 50,
-		height: 50,
-		borderRadius: 25,
+		width: 30,
+		height: 30,
+		borderRadius: 30,
 		overflow: "hidden",
+		marginTop: 10,
 		marginRight: 10,
 	},
 	image: {
-		width: 50,
-		height: 50,
+		width: 30,
+		height: 30,
 	},
 });
 

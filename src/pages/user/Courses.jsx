@@ -16,6 +16,8 @@ const Courses = () => {
 		doc(db, "students", auth.currentUser.uid)
 	);
 
+	const [studentsData] = useCollectionData(collection(db, "students"));
+
 	// Get future courses and listen for changes in real time (auto-update)
 	const [courses] = useCollectionData(
 		query(
@@ -26,12 +28,16 @@ const Courses = () => {
 	);
 
 	const renderCourse = ({ item }) => (
-		<Course course={item} studentData={studentData} />
+		<Course
+			course={item}
+			studentData={studentData}
+			studentsData={studentsData}
+		/>
 	);
 
 	return (
 		<View style={styles.container}>
-			{courses && studentData && (
+			{courses && studentData && studentsData && (
 				<FlatList
 					style={styles.courses}
 					// Filtering courses by group doesn't work in the query above and I don't know why

@@ -18,7 +18,7 @@ const Profile = () => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [name, setName] = useState(student.displayName);
 
-	const [photoURL, setPhotoURL] = useState(student.photoURL);
+	const [picture, setPicture] = useState(student.photoURL);
 
 	const [studentData] = useDocumentData(doc(db, "students", student.uid));
 
@@ -52,32 +52,32 @@ const Profile = () => {
 
 		await uploadBytesResumable(newImageRef, blob);
 
-		const photoURL = await getDownloadURL(newImageRef);
+		const picture = await getDownloadURL(newImageRef);
 
 		await updateProfile(student, {
-			photoURL,
+			photoURL: picture,
 		});
 		await updateDoc(doc(db, "students", student.uid), {
-			photoURL,
+			picture,
 		});
 
-		setPhotoURL(photoURL);
+		setPicture(picture);
 	};
 
 	return (
 		<View style={styles.container}>
 			<TouchableOpacity onPress={() => changePicture()}>
 				<View style={styles.profileImage}>
-					{!photoURL && (
+					{!picture && (
 						<Image
 							source={require("../../assets/profile.png")}
 							style={styles.image}
 							resizeMode="cover"
 						/>
 					)}
-					{photoURL && (
+					{picture && (
 						<Image
-							source={{ uri: photoURL }}
+							source={{ uri: picture }}
 							style={styles.image}
 							resizeMode="cover"
 						/>

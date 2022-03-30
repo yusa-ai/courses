@@ -9,7 +9,9 @@ import {
 import { doc, updateDoc } from "firebase/firestore";
 
 import CheckInButton from "./CheckInButton";
+import SmallPicture from "./SmallPicture";
 import TimeAgo from "./TimeAgo";
+import { clickProps } from "react-native-web/dist/cjs/modules/forwardedProps";
 import { db } from "../../../../firebase";
 
 // function that gets a full date and returns a string with the format hh:mm
@@ -38,13 +40,19 @@ const getGroups = (groups) => {
 	return groupsString;
 };
 
-const Course = ({ course, studentData }) => {
+const Course = ({ course, studentData, studentsData }) => {
 	const checkedIn = course.checkedIn.includes(studentData.uid);
 
 	const handleSubmit = async () => {
 		await updateDoc(doc(db, "courses", course.id), {
 			checkedIn: [...course.checkedIn, studentData.uid],
 		});
+	};
+
+	const renderPicture = ({ item }) => {
+		const student = studentsData?.find((student) => student.uid === item);
+
+		return <SmallPicture uri={student?.picture} />;
 	};
 
 	return (
@@ -60,7 +68,7 @@ const Course = ({ course, studentData }) => {
 			<Text style={styles.instructor}>{course.instructor}</Text>
 
 			<View style={styles.dates}>
-				<Text style={styles.date}>
+				<Text>
 					From {getTime(course.startDate.toDate())} to{" "}
 					{getTime(course.endDate.toDate())}
 				</Text>
@@ -80,17 +88,19 @@ const Course = ({ course, studentData }) => {
 				</Text>
 			)}
 
-			{!checkedIn && (
-				<CheckInButton
-					text={"Check in ⏰"}
-					disabled={checkedIn}
-					onPress={handleSubmit}
-				/>
-			)}
+			<CheckInButton
+				text={checkedIn ? "Checked in ✅" : "Check in ⏰"}
+				disabled={checkedIn}
+				onPress={handleSubmit}
+			/>
 
-			{checkedIn && (
-				<CheckInButton text={"Checked in ✅"} disabled={checkedIn} />
-			)}
+			<FlatList
+				data={course.checkedIn}
+				renderItem={renderPicture}
+				keyExtractor={(_item, index) => index}
+				scrollEnabled={false}
+				numColumns={8}
+			/>
 		</View>
 	);
 };
