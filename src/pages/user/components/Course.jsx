@@ -1,4 +1,11 @@
-import { Linking, Platform, StyleSheet, Text, View } from "react-native";
+import {
+	FlatList,
+	Linking,
+	Platform,
+	StyleSheet,
+	Text,
+	View,
+} from "react-native";
 import { doc, updateDoc } from "firebase/firestore";
 
 import CheckInButton from "./CheckInButton";
@@ -43,12 +50,10 @@ const Course = ({ course, studentData }) => {
 	return (
 		<View style={styles.course}>
 			<View style={styles.inline}>
-				{platform === "ios" && (
-					<Text style={styles.titleIOS}>{course.title}</Text>
-				)}
-				{platform !== "ios" && (
-					<Text style={styles.titleAndroid}>{course.title}</Text>
-				)}
+				<Text
+					style={platform === "ios" ? styles.titleIOS : styles.titleAndroid}>
+					{course.title}
+				</Text>
 				<Text style={styles.groups}>{getGroups(course.groups)}</Text>
 			</View>
 
