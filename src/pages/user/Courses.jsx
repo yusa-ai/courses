@@ -13,10 +13,9 @@ const Courses = () => {
 	const today = getTodayDate();
 
 	const [userData] = useDocumentData(doc(db, "users", auth.currentUser.uid));
-	const userGroup = userData?.group;
 
 	// Get future courses and listen for changes in real time (auto-update)
-	const [courses, loading, error] = useCollectionData(
+	const [courses] = useCollectionData(
 		query(
 			collection(db, "courses"),
 			where("startDate", ">=", today),
@@ -24,16 +23,18 @@ const Courses = () => {
 		)
 	);
 
-	const renderCourse = ({ item }) => <Course course={item} />;
+	const renderCourse = ({ item }) => (
+		<Course course={item} userData={userData} />
+	);
 
 	return (
 		<View style={styles.container}>
-			{courses && (
+			{courses && userData && (
 				<FlatList
 					style={styles.courses}
 					// Filtering courses by group doesn't work in the query above and I don't know why
 					data={[...courses].filter((course) =>
-						course.groups.includes(userGroup)
+						course.groups.includes(userData.group)
 					)}
 					renderItem={renderCourse}
 					keyExtractor={(_item, index) => index}

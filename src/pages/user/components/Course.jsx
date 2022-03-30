@@ -1,6 +1,9 @@
 import { Linking, Platform, StyleSheet, Text, View } from "react-native";
+import { doc, updateDoc } from "firebase/firestore";
 
+import CheckInButton from "./CheckInButton";
 import TimeAgo from "./TimeAgo";
+import { db } from "../../../../firebase";
 
 // function that gets a full date and returns a string with the format hh:mm
 const getTime = (date) => {
@@ -28,42 +31,64 @@ const getGroups = (groups) => {
 	return groupsString;
 };
 
-const Course = ({ course }) => (
-	<View style={styles.course}>
-		<View style={styles.inline}>
-			{platform === "ios" && (
-				<Text style={styles.titleIOS}>{course.title}</Text>
+const Course = ({ course, userData }) => {
+	const checkedIn = course.checkedIn.includes(userData.uid);
+
+	const handleSubmit = async () => {
+		await updateDoc(doc(db, "courses", course.id), {
+			checkedIn: [...course.checkedIn, userData.uid],
+		});
+	};
+
+	return (
+		<View style={styles.course}>
+			<View style={styles.inline}>
+				{platform === "ios" && (
+					<Text style={styles.titleIOS}>{course.title}</Text>
+				)}
+				{platform !== "ios" && (
+					<Text style={styles.titleAndroid}>{course.title}</Text>
+				)}
+				<Text style={styles.groups}>{getGroups(course.groups)}</Text>
+			</View>
+
+			<Text style={styles.instructor}>{course.instructor}</Text>
+
+			<View style={styles.dates}>
+				<Text style={styles.date}>
+					From {getTime(course.startDate.toDate())} to{" "}
+					{getTime(course.endDate.toDate())}
+				</Text>
+
+				<Text style={styles.timeago}>
+					{" "}
+					{"("}
+					<TimeAgo date={course.startDate.toDate()} />
+					{")"}
+				</Text>
+			</View>
+
+			<Text style={styles.platform}>{course.platform}</Text>
+			{course.link && (
+				<Text style={styles.link} onPress={() => Linking.openURL(course.link)}>
+					{course.link}
+				</Text>
 			)}
-			{platform !== "ios" && (
-				<Text style={styles.titleAndroid}>{course.title}</Text>
+
+			{!checkedIn && (
+				<CheckInButton
+					text={"Check in ⏰"}
+					disabled={checkedIn}
+					onPress={handleSubmit}
+				/>
 			)}
-			<Text style={styles.groups}>{getGroups(course.groups)}</Text>
+
+			{checkedIn && (
+				<CheckInButton text={"Checked in ✅"} disabled={checkedIn} />
+			)}
 		</View>
-
-		<Text style={styles.instructor}>{course.instructor}</Text>
-
-		<View style={styles.dates}>
-			<Text style={styles.date}>
-				From {getTime(course.startDate.toDate())} to{" "}
-				{getTime(course.endDate.toDate())}
-			</Text>
-
-			<Text style={styles.timeago}>
-				{" "}
-				{"("}
-				<TimeAgo date={course.startDate.toDate()} />
-				{")"}
-			</Text>
-		</View>
-
-		<Text style={styles.platform}>{course.platform}</Text>
-		{course.link && (
-			<Text style={styles.link} onPress={() => Linking.openURL(course.link)}>
-				{course.link}
-			</Text>
-		)}
-	</View>
-);
+	);
+};
 
 const styles = StyleSheet.create({
 	course: {
