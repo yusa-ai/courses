@@ -16,24 +16,24 @@ const Profile = () => {
 	const user = auth.currentUser;
 
 	const [modalVisible, setModalVisible] = useState(false);
-	const [username, setUsername] = useState(user.displayName);
+	const [name, setName] = useState(user.displayName);
 
 	const [photoURL, setPhotoURL] = useState(user.photoURL);
 
 	const [userData] = useDocumentData(doc(db, "users", user.uid));
 
-	const changeUsername = async (username) => {
+	const changeName = async (name) => {
 		// Update the internal display name of the user
 		await updateProfile(auth.currentUser, {
-			displayName: username,
+			displayName: name,
 		});
 
 		// Update the username in database
 		await updateDoc(doc(db, "users", auth.currentUser.uid), {
-			username,
+			name,
 		});
 
-		setUsername(username);
+		setName(name);
 	};
 
 	const changePicture = async () => {
@@ -85,7 +85,7 @@ const Profile = () => {
 			</TouchableOpacity>
 
 			<View>
-				<Text style={styles.username}>{user.displayName}</Text>
+				<Text style={styles.name}>{user.displayName}</Text>
 				{userData && <Text style={styles.group}>Group: {userData.group}</Text>}
 			</View>
 
@@ -114,13 +114,13 @@ const Profile = () => {
 				onBackdropPress={() => {
 					setModalVisible(false);
 				}}>
-				<Dialog.Title>Change username</Dialog.Title>
-				<Dialog.Input placeholder="New username" onChangeText={setUsername} />
+				<Dialog.Title>Change name</Dialog.Title>
+				<Dialog.Input placeholder="New name" onChangeText={setName} />
 				<Dialog.Button label="Cancel" onPress={() => setModalVisible(false)} />
 				<Dialog.Button
 					label="Confirm"
 					onPress={async () => {
-						await changeUsername(username);
+						await changeName(name);
 						setModalVisible(!modalVisible);
 					}}
 				/>
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "#ed3b3b",
 	},
 
-	username: {
+	name: {
 		marginTop: 10,
 		color: "white",
 		fontSize: 36,
