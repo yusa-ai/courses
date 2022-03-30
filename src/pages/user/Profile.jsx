@@ -33,15 +33,13 @@ const Profile = () => {
 
 	return (
 		<View style={styles.container}>
-			<TouchableOpacity>
-				<View style={styles.profileImage}>
-					<Image
-						source={require("../../assets/profile.png")}
-						style={styles.image}
-						resizeMode="cover"
-					/>
-				</View>
-			</TouchableOpacity>
+			<View style={styles.profileImage}>
+				<Image
+					source={require("../../assets/profile.png")}
+					style={styles.image}
+					resizeMode="cover"
+				/>
+			</View>
 
 			<View>
 				<Text style={styles.username}>{user.displayName}</Text>
