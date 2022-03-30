@@ -4,9 +4,7 @@ const SmallPicture = ({ uri }) => (
 	<View style={styles.container}>
 		<Image
 			style={styles.image}
-			source={{
-				uri: uri,
-			}}
+			source={uri ? { uri } : require("../../../assets/profile.png")}
 		/>
 	</View>
 );

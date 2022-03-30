@@ -15,12 +15,12 @@ import { useState } from "react";
 const Profile = () => {
 	const student = auth.currentUser;
 
+	const [studentData] = useDocumentData(doc(db, "students", student.uid));
+
 	const [modalVisible, setModalVisible] = useState(false);
 	const [name, setName] = useState(student.displayName);
 
-	const [picture, setPicture] = useState(student.photoURL);
-
-	const [studentData] = useDocumentData(doc(db, "students", student.uid));
+	const [picture, setPicture] = useState(studentData?.picture);
 
 	const changeName = async (name) => {
 		// Update the internal display name of the user
@@ -53,10 +53,6 @@ const Profile = () => {
 		await uploadBytesResumable(newImageRef, blob);
 
 		const picture = await getDownloadURL(newImageRef);
-
-		await updateProfile(student, {
-			photoURL: picture,
-		});
 		await updateDoc(doc(db, "students", student.uid), {
 			picture,
 		});
@@ -70,7 +66,11 @@ const Profile = () => {
 				<View style={styles.profileImage}>
 					{!picture && (
 						<Image
-							source={require("../../assets/profile.png")}
+							source={
+								studentData && studentData.picture
+									? { uri: studentData.picture }
+									: require("../../assets/profile.png")
+							}
 							style={styles.image}
 							resizeMode="cover"
 						/>
