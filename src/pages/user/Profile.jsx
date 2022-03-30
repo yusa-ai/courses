@@ -52,7 +52,7 @@ const Profile = () => {
 				<TouchableOpacity onPress={() => setModalVisible(true)}>
 					<View style={[styles.menuAction, styles.menuActionBorder]}>
 						<Ionicons name="pencil-outline" style={styles.menuIcon} size={15} />
-						<Text style={styles.menuText}>Change username</Text>
+						<Text style={styles.menuText}>Change name</Text>
 					</View>
 				</TouchableOpacity>
 
