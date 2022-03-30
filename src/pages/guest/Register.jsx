@@ -56,7 +56,11 @@ const Register = () => {
 					onValueChange={setGroup}>
 					<Picker.Item label="Select a group" value="" />
 					{groups.map((group) => (
-						<Picker.Item label={group.name} value={group.id} key={group.id} />
+						<Picker.Item
+							label={group.name}
+							value={group.name}
+							key={group.name}
+						/>
 					))}
 				</Picker>
 			)}
