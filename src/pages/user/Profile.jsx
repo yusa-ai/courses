@@ -1,6 +1,9 @@
+import * as ImagePicker from "expo-image-picker";
+
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { auth, db } from "../../../firebase";
+import { auth, db, storage } from "../../../firebase";
 import { doc, updateDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { signOut, updateProfile } from "firebase/auth";
 
 import Dialog from "react-native-dialog";
@@ -14,6 +17,8 @@ const Profile = () => {
 
 	const [modalVisible, setModalVisible] = useState(false);
 	const [username, setUsername] = useState(user.displayName);
+
+	const [photoURL, setPhotoURL] = useState(user.photoURL);
 
 	const [userData] = useDocumentData(doc(db, "users", user.uid));
 
@@ -31,15 +36,53 @@ const Profile = () => {
 		setUsername(username);
 	};
 
+	const changePicture = async () => {
+		const result = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: "Images",
+			allowsEditing: true,
+		});
+
+		if (result.cancelled) return;
+
+		const newImageRef = ref(
+			storage,
+			`images/profile/${auth.currentUser.uid}.png`
+		);
+
+		// Convert the image to a blob
+		const r = await fetch(result.uri);
+		const blob = await r.blob();
+
+		await uploadBytesResumable(newImageRef, blob);
+
+		const downloadURL = await getDownloadURL(newImageRef);
+		await updateProfile(auth.currentUser, {
+			photoURL: downloadURL,
+		});
+
+		setPhotoURL(downloadURL);
+	};
+
 	return (
 		<View style={styles.container}>
-			<View style={styles.profileImage}>
-				<Image
-					source={require("../../assets/profile.png")}
-					style={styles.image}
-					resizeMode="cover"
-				/>
-			</View>
+			<TouchableOpacity onPress={() => changePicture()}>
+				<View style={styles.profileImage}>
+					{!photoURL && (
+						<Image
+							source={require("../../assets/profile.png")}
+							style={styles.image}
+							resizeMode="cover"
+						/>
+					)}
+					{photoURL && (
+						<Image
+							source={{ uri: photoURL }}
+							style={styles.image}
+							resizeMode="cover"
+						/>
+					)}
+				</View>
+			</TouchableOpacity>
 
 			<View>
 				<Text style={styles.username}>{user.displayName}</Text>
