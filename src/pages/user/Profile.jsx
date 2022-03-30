@@ -55,12 +55,16 @@ const Profile = () => {
 
 		await uploadBytesResumable(newImageRef, blob);
 
-		const downloadURL = await getDownloadURL(newImageRef);
+		const photoURL = await getDownloadURL(newImageRef);
+
 		await updateProfile(auth.currentUser, {
-			photoURL: downloadURL,
+			photoURL,
+		});
+		await updateDoc(doc(db, "users", auth.currentUser.uid), {
+			photoURL,
 		});
 
-		setPhotoURL(downloadURL);
+		setPhotoURL(photoURL);
 	};
 
 	return (
