@@ -12,7 +12,9 @@ import { StatusBar } from "expo-status-bar";
 const Courses = () => {
 	const today = getTodayDate();
 
-	const [userData] = useDocumentData(doc(db, "users", auth.currentUser.uid));
+	const [studentData] = useDocumentData(
+		doc(db, "students", auth.currentUser.uid)
+	);
 
 	// Get future courses and listen for changes in real time (auto-update)
 	const [courses] = useCollectionData(
@@ -24,17 +26,17 @@ const Courses = () => {
 	);
 
 	const renderCourse = ({ item }) => (
-		<Course course={item} userData={userData} />
+		<Course course={item} studentData={studentData} />
 	);
 
 	return (
 		<View style={styles.container}>
-			{courses && userData && (
+			{courses && studentData && (
 				<FlatList
 					style={styles.courses}
 					// Filtering courses by group doesn't work in the query above and I don't know why
 					data={[...courses].filter((course) =>
-						course.groups.includes(userData.group)
+						course.groups.includes(studentData.group)
 					)}
 					renderItem={renderCourse}
 					keyExtractor={(_item, index) => index}

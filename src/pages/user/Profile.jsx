@@ -13,14 +13,14 @@ import { useDocumentData } from "react-firebase-hooks/firestore";
 import { useState } from "react";
 
 const Profile = () => {
-	const user = auth.currentUser;
+	const student = auth.currentUser;
 
 	const [modalVisible, setModalVisible] = useState(false);
-	const [name, setName] = useState(user.displayName);
+	const [name, setName] = useState(student.displayName);
 
-	const [photoURL, setPhotoURL] = useState(user.photoURL);
+	const [photoURL, setPhotoURL] = useState(student.photoURL);
 
-	const [userData] = useDocumentData(doc(db, "users", user.uid));
+	const [studentData] = useDocumentData(doc(db, "students", student.uid));
 
 	const changeName = async (name) => {
 		// Update the internal display name of the user
@@ -29,7 +29,7 @@ const Profile = () => {
 		});
 
 		// Update the username in database
-		await updateDoc(doc(db, "users", auth.currentUser.uid), {
+		await updateDoc(doc(db, "students", student.uid), {
 			name,
 		});
 
@@ -44,10 +44,7 @@ const Profile = () => {
 
 		if (result.cancelled) return;
 
-		const newImageRef = ref(
-			storage,
-			`images/profile/${auth.currentUser.uid}.png`
-		);
+		const newImageRef = ref(storage, `images/profile/${student.uid}.png`);
 
 		// Convert the image to a blob
 		const r = await fetch(result.uri);
@@ -57,10 +54,10 @@ const Profile = () => {
 
 		const photoURL = await getDownloadURL(newImageRef);
 
-		await updateProfile(auth.currentUser, {
+		await updateProfile(student, {
 			photoURL,
 		});
-		await updateDoc(doc(db, "users", auth.currentUser.uid), {
+		await updateDoc(doc(db, "students", student.uid), {
 			photoURL,
 		});
 
@@ -89,8 +86,10 @@ const Profile = () => {
 			</TouchableOpacity>
 
 			<View>
-				<Text style={styles.name}>{user.displayName}</Text>
-				{userData && <Text style={styles.group}>Group: {userData.group}</Text>}
+				<Text style={styles.name}>{student.displayName}</Text>
+				{studentData && (
+					<Text style={styles.group}>Group: {studentData.group}</Text>
+				)}
 			</View>
 
 			<View style={styles.menu}>

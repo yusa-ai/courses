@@ -31,12 +31,12 @@ const getGroups = (groups) => {
 	return groupsString;
 };
 
-const Course = ({ course, userData }) => {
-	const checkedIn = course.checkedIn.includes(userData.uid);
+const Course = ({ course, studentData }) => {
+	const checkedIn = course.checkedIn.includes(studentData.uid);
 
 	const handleSubmit = async () => {
 		await updateDoc(doc(db, "courses", course.id), {
-			checkedIn: [...course.checkedIn, userData.uid],
+			checkedIn: [...course.checkedIn, studentData.uid],
 		});
 	};
 
