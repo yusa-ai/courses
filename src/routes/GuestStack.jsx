@@ -13,8 +13,24 @@ const GuestStack = () => {
 				component={Splash}
 				options={{ headerShown: false }}
 			/>
-			<Stack.Screen name="Login" component={Login} />
-			<Stack.Screen name="Register" component={Register} />
+			<Stack.Screen
+				name="Login"
+				component={Login}
+				options={{
+					headerTitle: "",
+					headerTransparent: true,
+					headerTintColor: "white",
+				}}
+			/>
+			<Stack.Screen
+				name="Register"
+				component={Register}
+				options={{
+					headerTitle: "",
+					headerTransparent: true,
+					headerTintColor: "white",
+				}}
+			/>
 		</Stack.Navigator>
 	);
 };

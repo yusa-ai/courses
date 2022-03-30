@@ -4,23 +4,27 @@ import { StatusBar } from "expo-status-bar";
 
 const Splash = ({ navigation }) => (
 	<View style={styles.container}>
-		<TouchableOpacity
-			style={styles.button}
-			onPress={() => {
-				navigation.push("Login");
-			}}>
-			<Text>Login</Text>
-		</TouchableOpacity>
+		<Text style={styles.title}>Courses.</Text>
 
-		<TouchableOpacity
-			style={styles.button}
-			onPress={() => {
-				navigation.push("Register");
-			}}>
-			<Text>Register</Text>
-		</TouchableOpacity>
+		<View style={styles.buttons}>
+			<TouchableOpacity
+				style={styles.button}
+				onPress={() => {
+					navigation.push("Login");
+				}}>
+				<Text style={styles.buttonText}>Login</Text>
+			</TouchableOpacity>
 
-		<StatusBar style="auto" />
+			<TouchableOpacity
+				style={styles.button}
+				onPress={() => {
+					navigation.push("Register");
+				}}>
+				<Text style={styles.buttonText}>Register</Text>
+			</TouchableOpacity>
+		</View>
+
+		<StatusBar style="light" />
 	</View>
 );
 
@@ -29,12 +33,31 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
-		backgroundColor: "white",
+		backgroundColor: "#ed3b3b",
+	},
+
+	title: {
+		fontSize: 50,
+		fontWeight: "300",
+		color: "white",
+	},
+
+	buttons: {
+		marginTop: 50,
 	},
 
 	button: {
-		marginTop: 10,
-		marginBottom: 10,
+		margin: 10,
+		padding: 10,
+		alignSelf: "stretch",
+		alignItems: "center",
+		backgroundColor: "white",
+		borderRadius: 7,
+	},
+
+	buttonText: {
+		color: "red",
+		fontSize: 20,
 	},
 });
 
