@@ -37,6 +37,7 @@ const Profile = () => {
 	};
 
 	const changePicture = async () => {
+		// Open image gallery on both Android and iOS
 		const result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: "Images",
 			allowsEditing: true,

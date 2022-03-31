@@ -24,6 +24,7 @@ const Login = ({ navigation }) => {
 	return (
 		<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 			<KeyboardAvoidingView
+				// Specific iOS property
 				behavior={Platform.OS === "ios" ? "padding" : undefined}
 				style={styles.container}>
 				<Text style={styles.title}>Login</Text>

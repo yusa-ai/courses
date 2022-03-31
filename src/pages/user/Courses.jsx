@@ -40,7 +40,7 @@ const Courses = () => {
 			{courses && studentData && studentsData && (
 				<FlatList
 					style={styles.courses}
-					// Filtering courses by group doesn't work in the query above and I don't know why
+					// Filtering courses by group
 					data={[...courses].filter((course) =>
 						course.groups.includes(studentData.group)
 					)}

@@ -12,6 +12,7 @@ TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(fr);
 
 export default function App() {
+	// Dynamically render the app based on the user's authentication state
 	const [currentUser] = useAuthState(auth);
 
 	return <Routes user={currentUser} />;
