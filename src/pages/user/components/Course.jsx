@@ -11,7 +11,6 @@ import { doc, updateDoc } from "firebase/firestore";
 import CheckInButton from "./CheckInButton";
 import SmallPicture from "./SmallPicture";
 import TimeAgo from "./TimeAgo";
-import { clickProps } from "react-native-web/dist/cjs/modules/forwardedProps";
 import { db } from "../../../../firebase";
 
 // function that gets a full date and returns a string with the format hh:mm
@@ -152,7 +151,7 @@ const styles = StyleSheet.create({
 	},
 
 	link: {
-		color: "#ed3b3b",
+		color: "#4285f4",
 		textDecorationLine: "underline",
 	},
 });

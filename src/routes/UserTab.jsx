@@ -10,7 +10,7 @@ const UserTab = () => {
 		<Tab.Navigator
 			screenOptions={{
 				headerTitleAlign: "center",
-				tabBarActiveTintColor: "#ed3b3b",
+				tabBarActiveTintColor: "#4285f4",
 			}}>
 			<Tab.Screen
 				name="Courses"

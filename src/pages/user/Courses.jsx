@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
-		backgroundColor: "#ed3b3b",
+		backgroundColor: "#4285f4",
 	},
 
 	courses: {
